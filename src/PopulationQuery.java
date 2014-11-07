@@ -1,9 +1,6 @@
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.Integer;
-import CensusSolver;
 
 public class PopulationQuery {
 	// next four constants are relevant to parsing
@@ -54,6 +51,14 @@ public class PopulationQuery {
         return result;
 	}
 
+  public static Pair<Integer, Float> singleInteraction(int west, int south, int east, int north) {
+    return null;
+  };
+
+  public static void preprocess(String fileName, int columns, int rows, int version) {
+
+  }
+
   public static void printError(String error) {
     System.out.println("ERROR: " + error);
   }
@@ -67,19 +72,6 @@ public class PopulationQuery {
       printError("Incorrect number of args!");
       System.exit(1);
     }
-
-    String fileName = args[0];
-    int xBuckets = Integer.parseInt(args[1]);
-    int yBuckets = Integer.parseInt(args[2]);
-    int version = Integer.parseInt(args[3].substring(2));
-    CensusSolver solver = null;
-
-    switch (version) {
-      case 1:
-        solver = Cens
-
-    }
-
 
 	}
 
