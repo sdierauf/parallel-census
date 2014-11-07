@@ -75,6 +75,8 @@ public class PopulationQuery {
     CensusSolver solver = null;
 
     switch (version) {
+      case 1:
+        solver = Cens
 
     }
 
