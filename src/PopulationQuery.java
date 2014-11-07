@@ -8,6 +8,8 @@ public class PopulationQuery {
 	public static final int POPULATION_INDEX = 4; // zero-based indices
 	public static final int LATITUDE_INDEX   = 5;
 	public static final int LONGITUDE_INDEX  = 6;
+
+  public static CensusData data = null;
 	
 	// parse the input file into a large array held in a CensusData object
 	public static CensusData parse(String filename) {
@@ -51,12 +53,25 @@ public class PopulationQuery {
         return result;
 	}
 
+  //Needed for USMaps
   public static Pair<Integer, Float> singleInteraction(int west, int south, int east, int north) {
     return null;
-  };
+  }
 
-  public static void preprocess(String fileName, int columns, int rows, int version) {
-
+  //Needed for USMaps
+  public static void preprocess(String filename, int columns, int rows, int version) {
+    switch (version) {
+      case 1:
+        //do dumb
+      case 2:
+        //do parallel dumb
+      case 3:
+        //do linear smart
+      case 4:
+        //do parallel smart
+      default:
+        throw new IllegalArgumentException(); //yolo
+    }
   }
 
   public static void printError(String error) {
@@ -66,12 +81,19 @@ public class PopulationQuery {
 	// argument 1: file name for input data: pass this to parse
 	// argument 2: number of x-dimension buckets
 	// argument 3: number of y-dimension buckets
-	// argument 4: -v1, -v2, -v3, -v4, or -v5
+	// argument 4: -v1, -v2, -v3, -v4, or -v5 (WTF IS V5)
 	public static void main(String[] args) {
 		if (args.length != 4) {
       printError("Incorrect number of args!");
       System.exit(1);
     }
+
+    String fileName = args[0];
+    int columns = Integer.parseInt(args[1]);
+    int rows = Integer.parseInt(args[2]);
+    int version = Integer.parseInt(args[3].substring(2));
+
+
 
 	}
 
