@@ -3,25 +3,6 @@ parallel-census
 
 Solution for the parallel census 332 homework
 
-# INSTRUCTIONS: 
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
- <title>CSE 332, Homework 6</title>
-</head><body>
-
-<center>
-
-## 
-CSE 332: Data Abstractions
-
-Homework #6
-
-November 3, 2014
-
-Last modified: October 31, 2:00 p.m.
-</center>
-
 ## Outline
 
 *   [Due Dates and Turn-In](#Due)
