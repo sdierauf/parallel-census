@@ -22,10 +22,6 @@ November 3, 2014
 Last modified: October 31, 2:00 p.m.
 </center>
 
-<table>
-<tbody><tr>
-<td>
-
 ## Outline
 
 *   [Due Dates and Turn-In](#Due)
@@ -37,10 +33,6 @@ Last modified: October 31, 2:00 p.m.
 *   [Write-Up Questions](#WriteUp)
 *   [Extra Credit](#AboveAndBeyond)
 *   [Acknowledgments](#Acks)
-</td>
-<td><center>![](http://www.cs.washington.edu/education/courses/332/10au/homework/asst6_files/USMap.jpg)</center></td>
-</tr>
-</tbody></table>
 
 ## Due Dates and Turn-In
 
