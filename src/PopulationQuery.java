@@ -2,6 +2,8 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.Integer;
+import CensusSolver;
 
 public class PopulationQuery {
 	// next four constants are relevant to parsing
@@ -52,11 +54,33 @@ public class PopulationQuery {
         return result;
 	}
 
+  public static void printError(String error) {
+    System.out.println("ERROR: " + error);
+  }
+
 	// argument 1: file name for input data: pass this to parse
 	// argument 2: number of x-dimension buckets
 	// argument 3: number of y-dimension buckets
 	// argument 4: -v1, -v2, -v3, -v4, or -v5
 	public static void main(String[] args) {
-		// FOR YOU
+		if (args.length != 4) {
+      printError("Incorrect number of args!");
+      System.exit(1);
+    }
+
+    String fileName = args[0];
+    int xBuckets = Integer.parseInt(args[1]);
+    int yBuckets = Integer.parseInt(args[2]);
+    int version = Integer.parseInt(args[3].substring(2));
+    CensusSolver solver = null;
+
+    switch (version) {
+
+    }
+
+
 	}
+
 }
+
+
