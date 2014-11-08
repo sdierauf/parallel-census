@@ -1,6 +1,7 @@
 
 import java.io.*;
 import java.lang.Integer;
+import java.util.Scanner;
 
 public class PopulationQuery {
 	// next four constants are relevant to parsing
@@ -9,7 +10,8 @@ public class PopulationQuery {
 	public static final int LATITUDE_INDEX   = 5;
 	public static final int LONGITUDE_INDEX  = 6;
 
-  public static CensusData data = null;
+  //Has to be static because PopulationQuery might not get instantiated
+  public static CensusSolver solver = null;
 	
 	// parse the input file into a large array held in a CensusData object
 	public static CensusData parse(String filename) {
@@ -58,11 +60,23 @@ public class PopulationQuery {
     return null;
   }
 
-  //Needed for USMaps
+  public static Pair<Integer, Float> singleInteraction(int[] args) {
+    return singleInteraction(args[0], args[1], args[2], args[3]); //golly I wish this was Javascript
+  }
+
+  /**
+   * Sets up the solver based on the version
+   * see readme.md
+   * @param filename
+   * @param columns
+   * @param rows
+   * @param version
+   */
   public static void preprocess(String filename, int columns, int rows, int version) {
+    CensusData data = parse(filename);
     switch (version) {
       case 1:
-        //do dumb
+        solver = new LinearDumbCensusSolver(columns, rows, data);
       case 2:
         //do parallel dumb
       case 3:
@@ -72,6 +86,22 @@ public class PopulationQuery {
       default:
         throw new IllegalArgumentException(); //yolo
     }
+  }
+
+  public static int[] getCorrectInput(Scanner in, String input) {
+    String[] nums = null;
+    while (nums == null || nums.length != 4) {
+      nums = input.split(" ");
+      if (nums == null || nums.length != 4) {
+        System.out.println("Please give west, south, east, north coordinates of your query rectangle:");
+        input = in.nextLine();
+      }
+    }
+    int[] parsedNums = new int[4];
+    for (int i = 0; i < nums.length; i++) {
+      parsedNums[i] = Integer.parseInt(nums[i]);
+    }
+    return parsedNums;
   }
 
   public static void printError(String error) {
@@ -88,14 +118,33 @@ public class PopulationQuery {
       System.exit(1);
     }
 
-    String fileName = args[0];
+    String filename = args[0];
     int columns = Integer.parseInt(args[1]);
     int rows = Integer.parseInt(args[2]);
     int version = Integer.parseInt(args[3].substring(2));
 
+    //Set up our CensusSolver based on input
+    preprocess(filename, columns, rows, version);
 
+    Scanner in = new Scanner(System.in);
+    String input = "";
+    do {
+      System.out.println("Please give west, south, east, north coordinates of your query rectangle:");
+      input = in.nextLine();
+      String[] nums = input.split(" ");
+      int[] parsedNums = new int[4];
+      for (int i = 0; i < nums.length; i++) {
+        parsedNums[i] = Integer.parseInt(nums[i]);
+      }
+
+      Pair<Integer, Float> result = singleInteraction(parsedNums);
+      System.out.println("population of rectangle: " + result.getElementA());
+      System.out.println("percent of total population: " + result.getElementB());
+    } while (!input.equals("exit"));
 
 	}
+
+
 
 }
 

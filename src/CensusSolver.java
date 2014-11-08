@@ -4,14 +4,15 @@
  *
  * There are four versions of CensusSolver but they should all follow the same interface;
  * v1 = linear, dumb
- * v2 = linear, clever
- * v3 = Parallel, dumb
+ * v2 = Parallel, dumb
+ * v3 = linear, clever
  * v4 = Parallel, clever
- * v5 = ??
+ * v5 = ?? da fuck
  */
 
 public interface CensusSolver {
 
+  public Pair<Integer, Float> singleInteraction(int west, int south, int east, int north);
 
 
 }
