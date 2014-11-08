@@ -12,6 +12,17 @@
 
 public interface CensusSolver {
 
+
+  /**
+   * Runs a single interaction with the census solver,
+   * defines the size of the coordinates of the rectangle
+   * 
+   * @param west
+   * @param south
+   * @param east
+   * @param north
+   * @return
+   */
   public Pair<Integer, Float> singleInteraction(int west, int south, int east, int north);
 
 

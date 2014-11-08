@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4684515e-cdee-4783-a842-4f6010302b4b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AbstractCensusSolver.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/LinearDumbCensusSolver.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ParallelDumbCensusSolver.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CensusSolver.java" afterPath="$PROJECT_DIR$/src/CensusSolver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PopulationQuery.java" afterPath="$PROJECT_DIR$/src/PopulationQuery.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ParallelDumbCensusSolver.java" afterPath="$PROJECT_DIR$/src/ParallelDumbCensusSolver.java" />
     </list>
     <ignored path="parallel-census.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,11 +26,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="CensusSolver.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="CensusSolver.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/CensusSolver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
-              <caret line="9" column="18" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.40059346" vertical-offset="0" max-vertical-offset="674">
+              <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -99,14 +95,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ParallelDumbCensusSolver.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ParallelDumbCensusSolver.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ParallelDumbCensusSolver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.089020774" vertical-offset="0" max-vertical-offset="674">
-              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
+              <caret line="3" column="9" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="9" />
               <folding>
-                <element signature="e#292#293#0" expanded="true" />
-                <element signature="e#313#314#0" expanded="true" />
+                <element signature="e#324#325#0" expanded="true" />
+                <element signature="e#345#346#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -160,10 +156,10 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/src/AbstractCensusSolver.java" />
-        <option value="$PROJECT_DIR$/src/CensusSolver.java" />
         <option value="$PROJECT_DIR$/src/PopulationQuery.java" />
         <option value="$PROJECT_DIR$/src/LinearDumbCensusSolver.java" />
         <option value="$PROJECT_DIR$/src/ParallelDumbCensusSolver.java" />
+        <option value="$PROJECT_DIR$/src/CensusSolver.java" />
       </list>
     </option>
   </component>
@@ -594,22 +590,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AbstractCensusSolver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="195">
-          <caret line="1" column="26" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CensusSolver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
-          <caret line="9" column="18" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/PopulationQuery.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="781" max-vertical-offset="2355">
@@ -637,12 +617,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ParallelDumbCensusSolver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.089020774" vertical-offset="0" max-vertical-offset="674">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
+          <caret line="3" column="9" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="9" />
           <folding>
-            <element signature="e#292#293#0" expanded="true" />
-            <element signature="e#313#314#0" expanded="true" />
+            <element signature="e#324#325#0" expanded="true" />
+            <element signature="e#345#346#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AbstractCensusSolver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="195">
+          <caret line="1" column="26" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CensusSolver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.40059346" vertical-offset="0" max-vertical-offset="674">
+          <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>

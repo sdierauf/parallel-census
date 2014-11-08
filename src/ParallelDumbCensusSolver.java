@@ -1,5 +1,7 @@
 /**
- * Created by sdierauf on 11/7/14.
+ * Stefan Dierauf Nov 2014
+ * Parallel Dumb CensusSolver
+ * aka v2
  */
 public class ParallelDumbCensusSolver implements CensusSolver {
 
