@@ -5,8 +5,12 @@
  */
 public class ParallelDumbCensusSolver implements CensusSolver {
 
-  public ParallelDumbCensusSolver(int columns, int rows, CensusData data) {
+  private final int columns;
+  private final int rows;
 
+  public ParallelDumbCensusSolver(int columns, int rows, CensusData data) {
+    this.columns = columns;
+    this.rows = rows;
   }
 
   @Override

@@ -4,9 +4,15 @@
  * aka v1
  */
 
-public class LinearDumbCensusSolver implements CensusSolver{
+public class LinearDumbCensusSolver implements CensusSolver {
+  private int[][] theUSA;
+  private int totalPopualtion;
 
   public LinearDumbCensusSolver(int columns, int rows, CensusData data) {
+    theUSA = new int[rows][columns];
+    int row = 0;
+    int col = 0;
+    
 
   }
 
