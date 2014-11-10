@@ -36,14 +36,14 @@ public class LinearDumbCensusSolver implements CensusSolver {
       totalPopualtion += group.population;
     }
     // need to find some units to sort into groups
-    //latitude varies from south to nort, with southern latitudes being less than northern latitudes
+    //latitude varies from south to north, with southern latitudes being less than northern latitudes
     //longitude varies from west to east, with western longitudes being less than eastern longitudes
     float latUnit = (maxLat - minLat) / rows;
     float lonUnit = (maxLon - minLon) / columns;
     //for each group, subtract the minLon and minLat from each field
     //take those numbers and divide them by their respective units
     //round down to their respective buckets
-    System.out.println("lat max min lon max min " + maxLat + " " + minLat + " " + maxLon + " " + minLon);
+//    System.out.println("lat max min lon max min " + maxLat + " " + minLat + " " + maxLon + " " + minLon);
     int temp = 0;
     for (int i = 0; i < data.data_size; i++) {
       CensusGroup group = data.data[i];
