@@ -1,7 +1,12 @@
 /**
  * Stefan Dierauf Nov 2014
+ * Linear but smart CensusSolver, aka v3
+ * Does some additional preprocessing so all calls to singleInteraction are constant time
+ *
  */
 public class LinearSmartCensusSolver implements CensusSolver {
+
+  
 
 
   @Override
