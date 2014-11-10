@@ -57,7 +57,7 @@ public class PopulationQuery {
 
   //Needed for USMaps
   public static Pair<Integer, Float> singleInteraction(int west, int south, int east, int north) {
-    return null;
+    return solver.singleInteraction(west, south, east, north);
   }
 
   public static Pair<Integer, Float> singleInteraction(int[] args) {
@@ -77,12 +77,16 @@ public class PopulationQuery {
     switch (version) {
       case 1:
         solver = new LinearDumbCensusSolver(columns, rows, data);
+        break;
       case 2:
         //do parallel dumb
+        break;
       case 3:
         //do linear smart
+        break;
       case 4:
         //do parallel smart
+        break;
       default:
         throw new IllegalArgumentException(); //yolo
     }
@@ -129,7 +133,7 @@ public class PopulationQuery {
     Scanner in = new Scanner(System.in);
     String input = "";
     do {
-      System.out.println("Please give west, south, east, north coordinates of your query rectangle:");
+      System.out.print("Please give west, south, east, north coordinates of your query rectangle: ");
       input = in.nextLine();
       String[] nums = input.split(" ");
       int[] parsedNums = new int[4];
@@ -138,13 +142,16 @@ public class PopulationQuery {
       }
 
       Pair<Integer, Float> result = singleInteraction(parsedNums);
-      System.out.println("population of rectangle: " + result.getElementA());
-      System.out.println("percent of total population: " + result.getElementB());
+      if (result != null) {
+        System.out.println("population of rectangle: " + result.getElementA());
+        System.out.println("percent of total population: " + result.getElementB());
+      } else {
+        printError("OOPS YOU MESSED UP");
+      }
+
     } while (!input.equals("exit"));
 
 	}
-
-
 
 }
 
