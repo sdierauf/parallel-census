@@ -43,8 +43,6 @@ public class LinearDumbCensusSolver implements CensusSolver {
     //for each group, subtract the minLon and minLat from each field
     //take those numbers and divide them by their respective units
     //round down to their respective buckets
-//    System.out.println("lat max min lon max min " + maxLat + " " + minLat + " " + maxLon + " " + minLon);
-    int temp = 0;
     for (int i = 0; i < data.data_size; i++) {
       CensusGroup group = data.data[i];
       int row = (int) ((group.latitude - minLat) / latUnit);
@@ -56,14 +54,12 @@ public class LinearDumbCensusSolver implements CensusSolver {
         col--;
       }
       this.theUSA[row][col] += group.population;
-      temp += group.population;
     }
 
   }
 
   @Override
   public Pair<Integer, Float> singleInteraction(int west, int south, int east, int north) {
-    System.out.println(west +  " " + south +  " " + east +  " " + north);
     if (!checkParams(west, south, east, north)) {
       return null;
     } else {
