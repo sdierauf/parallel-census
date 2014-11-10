@@ -97,8 +97,8 @@ public class LinearSmartCensusSolver implements CensusSolver {
 
   private int calculateEachRectangle(int west, int south, int east, int north) {
     int popOfRectangle = 0;
-    for (int i = south - 1; i < north; i++) {
-      for (int j = west - 1; j < east; j++) {
+    for (int i = south; i < north; i++) {
+      for (int j = west; j < east; j++) {
         popOfRectangle += theUSA[i][j];
       }
     }
