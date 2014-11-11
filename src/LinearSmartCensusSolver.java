@@ -38,6 +38,7 @@ public class LinearSmartCensusSolver implements CensusSolver {
       }
       totalPopualtion += group.population;
     }
+    System.out.println(totalPopualtion);
 
 
     float latUnit = (maxLat - minLat) / rows;
@@ -88,17 +89,26 @@ public class LinearSmartCensusSolver implements CensusSolver {
     west = west - 1;
     //bottom right should be the north east one, because data is inverted, south is on top.
     int bottomRight = theUSA[north][east];
-    int aboveTopRight = theUSA[Math.max(0, south - 1)][east];
-    int leftOfBottomLeft = theUSA[north][Math.max(0, west - 1)];
-    int leftAndAboveOfUpperLeft = theUSA[Math.max(0, south - 1)][Math.max(0, west - 1)];
+    int aboveTopRight = 0;
+    if (south - 1 >= 0) {
+      aboveTopRight = theUSA[south - 1][east];
+    }
+    int leftOfBottomLeft = 0;
+    if (west - 1 >= 0) {
+      leftOfBottomLeft = theUSA[north][west - 1];
+    }
+    int leftAndAboveOfUpperLeft = 0;
+    if (south - 1 >= 0 && west - 1 >= 0) {
+      leftAndAboveOfUpperLeft = theUSA[south - 1][west - 1];
+    }
     int population = bottomRight - aboveTopRight - leftOfBottomLeft + leftAndAboveOfUpperLeft;
     return new Pair<Integer, Float>(population, population/(float) totalPopualtion * 100);
   }
 
   private int calculateEachRectangle(int west, int south, int east, int north) {
     int popOfRectangle = 0;
-    for (int i = south; i < north; i++) {
-      for (int j = west; j < east; j++) {
+    for (int i = south; i <= north; i++) {
+      for (int j = west; j <= east; j++) {
         popOfRectangle += theUSA[i][j];
       }
     }
