@@ -38,8 +38,6 @@ public class LinearSmartCensusSolver implements CensusSolver {
       }
       totalPopualtion += group.population;
     }
-    System.out.println(totalPopualtion);
-
 
     float latUnit = (maxLat - minLat) / rows;
     float lonUnit = (maxLon - minLon) / columns;
