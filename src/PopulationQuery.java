@@ -82,7 +82,7 @@ public class PopulationQuery {
         //do parallel dumb
         break;
       case 3:
-        //do linear smart
+        solver = new LinearSmartCensusSolver(columns, rows, data);
         break;
       case 4:
         //do parallel smart
