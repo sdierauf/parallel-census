@@ -27,7 +27,7 @@ public class CensusSolverTests {
         {LinearDumbCensusSolver.class},
         {LinearSmartCensusSolver.class},
         {ParallelDumbCensusSolver.class},
-//        {ParallelSmartCensusSolver.class}
+        {ParallelSmartCensusSolver.class}
     });
   }
 
