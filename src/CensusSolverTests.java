@@ -26,7 +26,7 @@ public class CensusSolverTests {
     return Arrays.asList(new Object[][] {
         {LinearDumbCensusSolver.class},
         {LinearSmartCensusSolver.class},
-//        {ParallelDumbCensusSolver.class},
+        {ParallelDumbCensusSolver.class},
 //        {ParallelSmartCensusSolver.class}
     });
   }

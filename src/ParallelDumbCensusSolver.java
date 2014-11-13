@@ -1,5 +1,6 @@
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.RecursiveTask;
 
 /**
  * Stefan Dierauf Nov 2014
@@ -10,7 +11,7 @@ import java.util.concurrent.RecursiveAction;
 
 public class ParallelDumbCensusSolver implements CensusSolver {
   protected ForkJoinPool pool = new ForkJoinPool();
-  protected static int CUTOFF = 500;
+  protected static int CUTOFF = 200;
 
   protected CensusData data;
 
@@ -22,8 +23,11 @@ public class ParallelDumbCensusSolver implements CensusSolver {
   private float minLatitude;
   private float maxLatitude;
 
-  protected float cellWidth;
-  protected float cellHeight;
+  protected float longitudeUnit;
+  protected float latitudeUnit;
+
+  private int[][] theUSA;
+  private float totalPopulation;
 
 
 
@@ -38,12 +42,34 @@ public class ParallelDumbCensusSolver implements CensusSolver {
     minLatitude = corners.minLatitude;
     maxLongitude = corners.maxLongitude;
     maxLatitude = corners.maxLatitude;
-    
+    longitudeUnit = (maxLongitude - minLongitude) / columns;
+    latitudeUnit = (maxLatitude - minLatitude) / rows;
+    ParallelBuildPopulationArray buildPopulationArray = new ParallelBuildPopulationArray(0, data.data_size);
+    Pair<int[][], Float> result = pool.invoke(buildPopulationArray);
+    theUSA = result.getElementA();
+    totalPopulation = result.getElementB();
   }
 
   @Override
   public Pair<Integer, Float> singleInteraction(int west, int south, int east, int north) {
-    return null;
+    if (!checkParams(west, south, east, north)) {
+      return null;
+    } else {
+      int popOfRectangle = 0;
+      for (int i = south - 1; i < north; i++) {
+        for (int j = west - 1; j < east; j++) {
+          popOfRectangle += theUSA[i][j];
+        }
+      }
+      return new Pair<Integer, Float>(popOfRectangle, 100 * (float) popOfRectangle / (float)totalPopulation);
+    }
+
+  }
+
+  private boolean checkParams(int west, int south, int east, int north) {
+    return west > 0 && south > 0
+        && east <= this.columns && north <= this.rows
+        && east >= west && north >= south;
   }
 
 
@@ -72,8 +98,8 @@ public class ParallelDumbCensusSolver implements CensusSolver {
           CensusGroup group = data.data[i];
           minLongitude = Math.min(minLongitude, group.longitude);
           minLatitude = Math.min(minLatitude, group.latitude);
-          maxLongitude = Math.min(maxLongitude, group.longitude);
-          maxLatitude = Math.min(maxLatitude, group.latitude);
+          maxLongitude = Math.max(maxLongitude, group.longitude);
+          maxLatitude = Math.max(maxLatitude, group.latitude);
         }
       } else {
         int midway = (maxIndex + minIndex) / 2;
@@ -84,12 +110,59 @@ public class ParallelDumbCensusSolver implements CensusSolver {
         fork.join();
         minLongitude = Math.min(fork.minLongitude, main.minLongitude);
         minLatitude = Math.min(fork.minLatitude, main.minLatitude);
-        maxLongitude = Math.min(fork.maxLongitude, main.maxLongitude);
-        maxLatitude = Math.min(fork.maxLatitude, main.maxLatitude);
+        maxLongitude = Math.max(fork.maxLongitude, main.maxLongitude);
+        maxLatitude = Math.max(fork.maxLatitude, main.maxLatitude);
       }
     }
   }
 
-  private class
+  private class ParallelBuildPopulationArray extends RecursiveTask<Pair<int[][], Float>> {
+    public int minIndex;
+    public int maxIndex;
+    public int[][] grid;
+    public float partialPop;
+
+    ParallelBuildPopulationArray(int minIndex, int maxIndex) {
+      this.minIndex = minIndex;
+      this.maxIndex = maxIndex;
+      grid = new int[rows][columns];
+      partialPop = 0;
+    }
+
+    protected Pair<int[][], Float> compute() {
+      if (maxIndex - minIndex <= CUTOFF * 750) {
+        for (int i = minIndex; i < maxIndex; i++) {
+          CensusGroup group = data.data[i];
+          int row = (int) ((group.latitude - minLatitude) / latitudeUnit);
+          if (row == rows) {
+            row--;
+          }
+          int col = (int) ((group.longitude - minLongitude) / longitudeUnit);
+          if (col == columns) {
+            col--;
+          }
+          partialPop += group.population;
+          grid[row][col] += group.population;
+        }
+        return new Pair<int[][], Float>(grid, partialPop);
+      } else {
+        int midway = (maxIndex - minIndex) / 2;
+        ParallelBuildPopulationArray fork = new ParallelBuildPopulationArray(minIndex, midway);
+        ParallelBuildPopulationArray main = new ParallelBuildPopulationArray(midway, maxIndex);
+        fork.fork();
+        main.compute();
+        fork.join();
+        this.partialPop = fork.partialPop + main.partialPop;
+        for (int i = 0; i < rows; i++) {
+          for (int j = 0; j < columns; j++) {
+            grid[i][j] = fork.grid[i][j] + main.grid[i][j];
+          }
+        }
+        return new Pair<int[][], Float>(grid, this.partialPop);
+      }
+    }
+  }
+
+
 
 }
