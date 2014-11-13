@@ -55,12 +55,13 @@ public class ParallelDumbCensusSolver implements CensusSolver {
     if (!checkParams(west, south, east, north)) {
       return null;
     } else {
-      int popOfRectangle = 0;
-      for (int i = south - 1; i < north; i++) {
-        for (int j = west - 1; j < east; j++) {
-          popOfRectangle += theUSA[i][j];
-        }
-      }
+      north = north - 1;
+      east = east - 1;
+      south = south - 1;
+      west = west - 1;
+      ParallelAdd2dArray add2dArray = new ParallelAdd2dArray(west, south, east, north);
+      int popOfRectangle = pool.invoke(add2dArray);
+
       return new Pair<Integer, Float>(popOfRectangle, 100 * (float) popOfRectangle / (float)totalPopulation);
     }
 
@@ -131,6 +132,7 @@ public class ParallelDumbCensusSolver implements CensusSolver {
 
     protected Pair<int[][], Float> compute() {
       if (maxIndex - minIndex <= CUTOFF * 750) {
+        partialPop = 0;
         for (int i = minIndex; i < maxIndex; i++) {
           CensusGroup group = data.data[i];
           int row = (int) ((group.latitude - minLatitude) / latitudeUnit);
@@ -159,6 +161,44 @@ public class ParallelDumbCensusSolver implements CensusSolver {
           }
         }
         return new Pair<int[][], Float>(grid, this.partialPop);
+      }
+    }
+  }
+
+  private class ParallelAdd2dArray extends RecursiveTask<Integer> {
+
+    public int minRow;
+    public int maxRow;
+    public int minCol;
+    public int maxCol;
+
+    public final int ARR_CUTOFF = 10;
+
+    ParallelAdd2dArray(int minCol, int minRow, int maxCol, int maxRow) {
+      this.minCol = minCol;
+      this.minRow = minRow;
+      this.maxCol = maxCol;
+      this.maxRow = maxRow;
+
+    }
+
+    protected Integer compute() {
+      if (this.maxRow - this.minRow <= ARR_CUTOFF) {
+        int partialPop = 0;
+        for (int i = minRow; i <= maxRow; i++) {
+          for (int j = minCol; j <= maxCol; j++) {
+            partialPop += theUSA[i][j];
+          }
+        }
+        return partialPop;
+      } else {
+        int midRow = this.minRow + (this.maxRow - this.minRow) / 2;
+        ParallelAdd2dArray fork = new ParallelAdd2dArray(minCol, minRow, maxCol, midRow - 1);
+        ParallelAdd2dArray main = new ParallelAdd2dArray(minCol, midRow, maxCol, maxRow);
+        fork.fork();
+        int result = main.compute();
+        int result1 = fork.join();
+        return new Integer(result + result1);
       }
     }
   }
