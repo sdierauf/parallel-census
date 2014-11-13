@@ -6,7 +6,7 @@
 
 public class LinearDumbCensusSolver implements CensusSolver {
   private int[][] theUSA;
-  private int totalPopualtion;
+  private int totalPopulation;
   private int columns;
   private int rows;
 
@@ -33,7 +33,7 @@ public class LinearDumbCensusSolver implements CensusSolver {
       if (group.latitude < minLat) {
         minLat = group.latitude;
       }
-      totalPopualtion += group.population;
+      totalPopulation += group.population;
     }
     // need to find some units to sort into groups
     //latitude varies from south to north, with southern latitudes being less than northern latitudes
@@ -69,7 +69,7 @@ public class LinearDumbCensusSolver implements CensusSolver {
           popOfRectangle += theUSA[i][j];
         }
       }
-      return new Pair<Integer, Float>(popOfRectangle, 100 * (float) popOfRectangle / (float)totalPopualtion);
+      return new Pair<Integer, Float>(popOfRectangle, 100 * (float) popOfRectangle / (float) totalPopulation);
     }
   }
 
