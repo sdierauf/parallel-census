@@ -5,17 +5,19 @@
  */
 
 public class LinearDumbCensusSolver implements CensusSolver {
-  private int[][] theUSA;
+  private CensusData data;
   private int totalPopulation;
   private int columns;
   private int rows;
+  private float latUnit;
+  private float lonUnit;
+  private float maxLon = Integer.MIN_VALUE;
+  private float minLon = Integer.MAX_VALUE;
+  private float maxLat = Integer.MIN_VALUE;
+  private float minLat = Integer.MAX_VALUE;
 
   public LinearDumbCensusSolver(int columns, int rows, CensusData data) {
-    theUSA = new int[rows][columns];
-    float maxLon = Integer.MIN_VALUE;
-    float minLon = Integer.MAX_VALUE;
-    float maxLat = Integer.MIN_VALUE;
-    float minLat = Integer.MAX_VALUE;
+    this.data = data;
     this.columns = columns;
     this.rows = rows;
     //find four corners of the US
@@ -35,27 +37,10 @@ public class LinearDumbCensusSolver implements CensusSolver {
       }
       totalPopulation += group.population;
     }
-    // need to find some units to sort into groups
     //latitude varies from south to north, with southern latitudes being less than northern latitudes
     //longitude varies from west to east, with western longitudes being less than eastern longitudes
-    float latUnit = (maxLat - minLat) / rows;
-    float lonUnit = (maxLon - minLon) / columns;
-    //for each group, subtract the minLon and minLat from each field
-    //take those numbers and divide them by their respective units
-    //round down to their respective buckets
-    for (int i = 0; i < data.data_size; i++) {
-      CensusGroup group = data.data[i];
-      int row = (int) ((group.latitude - minLat) / latUnit);
-      if (row == rows) {
-        row--;
-      }
-      int col = (int) ((group.longitude - minLon) / lonUnit);
-      if (col == columns) {
-        col--;
-      }
-      this.theUSA[row][col] += group.population;
-    }
-
+    latUnit = (maxLat - minLat) / rows;
+    lonUnit = (maxLon - minLon) / columns;
   }
 
   @Override
@@ -64,12 +49,19 @@ public class LinearDumbCensusSolver implements CensusSolver {
       return null;
     } else {
       int popOfRectangle = 0;
-      for (int i = south - 1; i < north; i++) {
-        for (int j = west - 1; j < east; j++) {
-          popOfRectangle += theUSA[i][j];
+      west = west - 1;
+      south = south - 1;
+      Rectangle selection = new Rectangle(minLon + west * lonUnit,
+          minLon + east * lonUnit,
+          minLat + north * latUnit,
+          minLat + south * latUnit);
+      for (int i = 0; i < this.data.data_size; i++) {
+        CensusGroup group = this.data.data[i];
+        if (selection.contains(group.longitude, group.latitude)) {
+          popOfRectangle += group.population;
         }
       }
-      return new Pair<Integer, Float>(popOfRectangle, 100 * (float) popOfRectangle / (float) totalPopulation);
+      return new Pair<Integer, Float>(popOfRectangle, (float)(popOfRectangle * 100.0 / totalPopulation));
     }
   }
 
