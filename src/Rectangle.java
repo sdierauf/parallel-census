@@ -24,6 +24,11 @@ public class Rectangle {
 						     Math.max(this.top,    that.top),
 				             Math.min(this.bottom, that.bottom));
 	}
+
+  public boolean contains(float longitude, float latitude) {
+    return longitude >= left && longitude <= right
+        && latitude <= top && latitude >= bottom;
+  }
 	
 	public String toString() {
 		return "[left=" + left + " right=" + right + " top=" + top + " bottom=" + bottom + "]";
