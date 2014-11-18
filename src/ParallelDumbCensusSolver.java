@@ -26,7 +26,7 @@ public class ParallelDumbCensusSolver implements CensusSolver {
   protected float longitudeUnit;
   protected float latitudeUnit;
 
-  private int[][] theUSA;
+//  private int[][] theUSA;
   private float totalPopulation;
 
 
@@ -46,7 +46,6 @@ public class ParallelDumbCensusSolver implements CensusSolver {
     latitudeUnit = (maxLatitude - minLatitude) / rows;
     ParallelBuildPopulationArray buildPopulationArray = new ParallelBuildPopulationArray(0, data.data_size);
     Pair<int[][], Float> result = pool.invoke(buildPopulationArray);
-    theUSA = result.getElementA();
     totalPopulation = result.getElementB();
   }
 
