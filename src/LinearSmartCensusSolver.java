@@ -46,22 +46,6 @@ public class LinearSmartCensusSolver extends SmartCensusSolver implements Census
         this.theUSA[row][col] += group.population;
     }
 
-    //this next part is really horrible and should be optimized just using theUSA in place
-    //but yolo for now. I am lazy
-    // TODO: fix this!
-    int[][] temp = new int[rows][columns];
-    for (int i = 0; i < theUSA.length; i++) {
-      for (int j = 0; j < theUSA[i].length; j++){
-        int popOfRectangle = 0;
-		for (int i1 = 0; i1 <= i; i1++) {
-		  for (int j1 = 0; j1 <= j; j1++) {
-		    popOfRectangle += theUSA[i1][j1];
-		  }
-		}
-		temp[i][j] = popOfRectangle;
-      }
-    }
-
-    theUSA = temp;
+    theUSA = makePopSumArray(theUSA);
   }
 }

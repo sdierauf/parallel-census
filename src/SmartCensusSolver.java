@@ -57,7 +57,19 @@ public abstract class SmartCensusSolver implements CensusSolver {
 
   // this *should* be in-place
   // TODO: fix later
-  public void makePopSumArray(int[][] popArray) {
-    
+  public int[][] makePopSumArray(int[][] popArray) {
+	int[][] popSumArray = new int[popArray.length][popArray[0].length];
+    for (int i = 0; i < popArray.length; i++) {
+      for (int j = 0; j < popArray[i].length; j++){
+        int popOfRectangle = 0;
+		for (int i1 = 0; i1 <= i; i1++) {
+		  for (int j1 = 0; j1 <= j; j1++) {
+		    popOfRectangle += theUSA[i1][j1];
+		  }
+		}
+		popSumArray[i][j] = popOfRectangle;
+      }
+    }
+    return popSumArray;
   }
 }
