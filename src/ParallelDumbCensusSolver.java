@@ -27,16 +27,16 @@ public class ParallelDumbCensusSolver implements CensusSolver {
   protected float latitudeUnit;
 
   private float totalPopulation;
+  public static Timer t = new Timer();
 
   public ParallelDumbCensusSolver(int columns, int rows, CensusData data) {
+    t.start();
     this.columns = columns;
     this.rows = rows;
     this.data = data;
     dataCUTOFF = data.data_size / 10 + 1;
-    Timer algTimer = new Timer("paralleldumb.txt").start();
     ParallelFindCorners corners = new ParallelFindCorners(0, data.data_size, data);
     totalPopulation = pool.invoke(corners);
-    algTimer.end();
     minLongitude = corners.minLongitude;
     minLatitude = corners.minLatitude;
     maxLongitude = corners.maxLongitude;
@@ -59,6 +59,7 @@ public class ParallelDumbCensusSolver implements CensusSolver {
           minLatitude + south * latitudeUnit);
       ParallelCalculatePopulation calculatePopulation = new ParallelCalculatePopulation(0, this.data.data_size, selection);
       int popOfRectangle = pool.invoke(calculatePopulation);
+      t.end();
       return new Pair<Integer, Float>(popOfRectangle, 100 * (float) popOfRectangle / (float) totalPopulation);
     }
 

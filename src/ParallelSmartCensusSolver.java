@@ -16,8 +16,10 @@ public class ParallelSmartCensusSolver extends SmartCensusSolver implements Cens
     this.data = data;
     dataCUTOFF = data.data_size / 10 + 1;
     arrCUTOFF = columns * rows / 25 + 1;
+    Timer t = new Timer().start();
     ParallelFindCorners corners = new ParallelFindCorners(0, data.data_size, data);
     totalPopulation = pool.invoke(corners);
+
     minLongitude = corners.minLongitude;
     minLatitude = corners.minLatitude;
     maxLongitude = corners.maxLongitude;

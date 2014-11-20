@@ -5,8 +5,8 @@
  */
 public class LinearSmartCensusSolver extends SmartCensusSolver implements CensusSolver {
 
-  public LinearSmartCensusSolver(int columns, int rows, CensusData data) {
 
+  public LinearSmartCensusSolver(int columns, int rows, CensusData data) {
     super(columns, rows, data);
     maxLongitude = Integer.MIN_VALUE;
     minLongitude = Integer.MAX_VALUE;
@@ -15,7 +15,6 @@ public class LinearSmartCensusSolver extends SmartCensusSolver implements Census
     theUSA = new int[rows][columns];
 
     //find four corners of the US
-    Timer algTimer = new Timer("linsmart.txt").start();
     for (int i = 0; i < data.data_size; i++) {
       CensusGroup group = data.data[i];
       if (group.longitude > maxLongitude) {
@@ -47,6 +46,5 @@ public class LinearSmartCensusSolver extends SmartCensusSolver implements Census
     }
 
     makePopSumArray(theUSA);
-    algTimer.end();
   }
 }

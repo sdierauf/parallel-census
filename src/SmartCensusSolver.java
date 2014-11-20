@@ -11,8 +11,10 @@ public abstract class SmartCensusSolver implements CensusSolver {
 
   protected float longitudeUnit;
   protected float latitudeUnit;
+  public static Timer t;
 
   public SmartCensusSolver(int columns, int rows, CensusData data) {
+    t = new Timer().start();
     this.columns = columns;
     this.rows = rows;
     theUSA = new int[rows][columns];
@@ -50,6 +52,7 @@ public abstract class SmartCensusSolver implements CensusSolver {
       leftAndAboveOfUpperLeft = theUSA[south - 1][west - 1];
     }
     int population = bottomRight - aboveTopRight - leftOfBottomLeft + leftAndAboveOfUpperLeft;
+    t.end();
     return new Pair<Integer, Float>(population, population / (float) totalPopulation * 100);
   }
 
