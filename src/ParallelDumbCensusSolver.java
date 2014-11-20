@@ -1,5 +1,4 @@
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.RecursiveTask;
 
 /**
@@ -27,19 +26,18 @@ public class ParallelDumbCensusSolver implements CensusSolver {
 
   private float totalPopulation;
 
-
-
-
   public ParallelDumbCensusSolver(int columns, int rows, CensusData data) {
     this.columns = columns;
     this.rows = rows;
     this.data = data;
+
     ParallelFindCorners corners = new ParallelFindCorners(0, data.data_size, data);
     totalPopulation = pool.invoke(corners);
     minLongitude = corners.minLongitude;
     minLatitude = corners.minLatitude;
     maxLongitude = corners.maxLongitude;
     maxLatitude = corners.maxLatitude;
+
     longitudeUnit = (maxLongitude - minLongitude) / columns;
     latitudeUnit = (maxLatitude - minLatitude) / rows;
   }
@@ -105,5 +103,4 @@ public class ParallelDumbCensusSolver implements CensusSolver {
       }
     }
   }
-  
 }

@@ -46,6 +46,6 @@ public class LinearSmartCensusSolver extends SmartCensusSolver implements Census
         this.theUSA[row][col] += group.population;
     }
 
-    theUSA = makePopSumArray(theUSA);
+    makePopSumArray(theUSA);
   }
 }
