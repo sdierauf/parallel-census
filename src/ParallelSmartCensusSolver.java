@@ -98,7 +98,7 @@ public class ParallelSmartCensusSolver extends SmartCensusSolver implements Cens
 		}
 		
 		protected void compute() {
-			if(Math.max(maxXIndex - minXIndex, maxYIndex - minYIndex) <= CUTOFF) {
+			if(Math.max(maxXIndex - minXIndex, maxYIndex - minYIndex) <= CUTOFF / 20) {
 				for(int i = minXIndex; i < maxXIndex; i++) {
 					for(int j = minYIndex; j < maxYIndex; j++) {
 						data1[i][j] = data1[i][j] + data2[i][j];
