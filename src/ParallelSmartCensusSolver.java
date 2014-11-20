@@ -7,15 +7,15 @@ import java.util.concurrent.RecursiveTask;
  */
 public class ParallelSmartCensusSolver extends SmartCensusSolver implements CensusSolver {
   protected ForkJoinPool pool = new ForkJoinPool();
-  protected static int CUTOFF = 200;
-  public static int globalSum = 0;
-
+  protected static int dataCUTOFF;
+  protected static int arrCUTOFF;
   protected CensusData data;
 
   public ParallelSmartCensusSolver(int columns, int rows, CensusData data) {
     super(columns, rows, data);
     this.data = data;
-
+    dataCUTOFF = data.data_size / 10 + 1;
+    arrCUTOFF = columns * rows / 10 + 1;
     ParallelFindCorners corners = new ParallelFindCorners(0, data.data_size, data);
     totalPopulation = pool.invoke(corners);
     minLongitude = corners.minLongitude;
@@ -46,7 +46,7 @@ public class ParallelSmartCensusSolver extends SmartCensusSolver implements Cens
     }
 
     protected int[][] compute() {
-      if (maxIndex - minIndex <= CUTOFF * 10) {
+      if (maxIndex - minIndex <= dataCUTOFF) {
         partialPop = 0;
         for (int i = minIndex; i < maxIndex; i++) {
           CensusGroup group = data.data[i];
@@ -101,13 +101,14 @@ public class ParallelSmartCensusSolver extends SmartCensusSolver implements Cens
     }
 
     protected void compute() {
-      if (Math.max(maxXIndex - minXIndex, maxYIndex - minYIndex) <= CUTOFF) {
+      if (Math.max(maxXIndex - minXIndex, maxYIndex - minYIndex) <= arrCUTOFF) {
         for (int i = minXIndex; i < maxXIndex; i++) {
           for (int j = minYIndex; j < maxYIndex; j++) {
             finalGrid[i][j] = data1[i][j] + data2[i][j];
           }
         }
       } else {
+        System.out.println("forked!");
         int midwayX = (maxXIndex - minXIndex) / 2 + minXIndex;
         int midwayY = (maxYIndex - minYIndex) / 2 + minYIndex;
         ParallelAddMatrices fork = new ParallelAddMatrices(data1, data2, minXIndex,

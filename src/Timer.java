@@ -27,7 +27,7 @@ public class Timer {
   }
 
   public long end() {
-//    end = System.nanoTime();
+    end = System.nanoTime();
 //    System.out.println(end - start);
 //    try {
 //      f.write("" + (end - start));

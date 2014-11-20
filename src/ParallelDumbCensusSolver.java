@@ -16,6 +16,9 @@ public class ParallelDumbCensusSolver implements CensusSolver {
   private final int columns;
   private final int rows;
 
+  protected static int dataCUTOFF;
+  protected static int arrCUTOFF;
+
   private float minLongitude;
   private float maxLongitude;
   private float minLatitude;
@@ -30,6 +33,8 @@ public class ParallelDumbCensusSolver implements CensusSolver {
     this.columns = columns;
     this.rows = rows;
     this.data = data;
+    dataCUTOFF = data.data_size / 10 + 1;
+    arrCUTOFF = columns * rows / 10 + 1;
     Timer algTimer = new Timer("paralleldumb.txt").start();
     ParallelFindCorners corners = new ParallelFindCorners(0, data.data_size, data);
     totalPopulation = pool.invoke(corners);
