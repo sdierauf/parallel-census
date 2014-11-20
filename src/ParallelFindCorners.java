@@ -6,7 +6,7 @@ public class ParallelFindCorners extends RecursiveTask<Integer> {
   public float maxLongitude;
   public float minLatitude;
   public float maxLatitude;
-  protected static int CUTOFF = 200;
+  protected static int CUTOFF;
 
   private int minIndex;
   private int maxIndex;
@@ -14,6 +14,7 @@ public class ParallelFindCorners extends RecursiveTask<Integer> {
   public int population;
 
   ParallelFindCorners(int minIndex, int maxIndex, CensusData data) {
+    CUTOFF = data.data_size / 10;
     this.minIndex = minIndex;
     this.maxIndex = maxIndex;
     this.population = 0;

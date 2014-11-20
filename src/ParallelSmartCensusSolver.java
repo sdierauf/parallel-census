@@ -15,7 +15,7 @@ public class ParallelSmartCensusSolver extends SmartCensusSolver implements Cens
     super(columns, rows, data);
     this.data = data;
     dataCUTOFF = data.data_size / 10 + 1;
-    arrCUTOFF = columns * rows / 10 + 1;
+    arrCUTOFF = columns * rows / 25 + 1;
     ParallelFindCorners corners = new ParallelFindCorners(0, data.data_size, data);
     totalPopulation = pool.invoke(corners);
     minLongitude = corners.minLongitude;
@@ -108,7 +108,6 @@ public class ParallelSmartCensusSolver extends SmartCensusSolver implements Cens
           }
         }
       } else {
-        System.out.println("forked!");
         int midwayX = (maxXIndex - minXIndex) / 2 + minXIndex;
         int midwayY = (maxYIndex - minYIndex) / 2 + minYIndex;
         ParallelAddMatrices fork = new ParallelAddMatrices(data1, data2, minXIndex,
