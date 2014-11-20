@@ -1,17 +1,14 @@
 
 
-import org.junit.*;
-
-import static org.junit.Assert.*;
-
-import org.junit.runner.*;
-import org.junit.runners.*;
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.rules.ExpectedException;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.Collection;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 /**
  * Stefan Dierauf Nov 2014

@@ -1,6 +1,3 @@
-
-
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -17,6 +14,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+
 
 
 public class USMaps {
