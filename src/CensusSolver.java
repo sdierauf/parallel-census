@@ -1,7 +1,7 @@
 /**
  * Stefan Dierauf Nov 2014
  * Generic interface for a CensusSolver
- *
+ * <p/>
  * There are four versions of CensusSolver but they should all follow the same interface;
  * v1 = linear, dumb
  * v2 = Parallel, dumb
@@ -17,7 +17,7 @@ public interface CensusSolver {
   /**
    * Runs a single interaction with the census solver,
    * defines the size of the coordinates of the rectangle
-   * 
+   *
    * @param west
    * @param south
    * @param east

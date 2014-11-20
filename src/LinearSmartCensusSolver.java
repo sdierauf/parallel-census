@@ -2,7 +2,6 @@
  * Stefan Dierauf Nov 2014
  * Linear but smart CensusSolver, aka v3
  * Does some additional preprocessing so all calls to singleInteraction are constant time
- *
  */
 public class LinearSmartCensusSolver extends SmartCensusSolver implements CensusSolver {
 
@@ -43,7 +42,7 @@ public class LinearSmartCensusSolver extends SmartCensusSolver implements Census
       if (row == rows) row--;
       int col = (int) ((group.longitude - minLongitude) / longitudeUnit);
       if (col == columns) col--;
-        this.theUSA[row][col] += group.population;
+      this.theUSA[row][col] += group.population;
     }
 
     makePopSumArray(theUSA);
