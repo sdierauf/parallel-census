@@ -16,6 +16,8 @@ public class ParallelDumbCensusSolver implements CensusSolver {
   private final int columns;
   private final int rows;
 
+  protected static int dataCUTOFF;
+
   private float minLongitude;
   private float maxLongitude;
   private float minLatitude;
@@ -30,7 +32,7 @@ public class ParallelDumbCensusSolver implements CensusSolver {
     this.columns = columns;
     this.rows = rows;
     this.data = data;
-
+    dataCUTOFF = data.data_size / 10 + 1;
     ParallelFindCorners corners = new ParallelFindCorners(0, data.data_size, data);
     totalPopulation = pool.invoke(corners);
     minLongitude = corners.minLongitude;
@@ -55,7 +57,7 @@ public class ParallelDumbCensusSolver implements CensusSolver {
           minLatitude + south * latitudeUnit);
       ParallelCalculatePopulation calculatePopulation = new ParallelCalculatePopulation(0, this.data.data_size, selection);
       int popOfRectangle = pool.invoke(calculatePopulation);
-      return new Pair<Integer, Float>(popOfRectangle, 100 * (float) popOfRectangle / (float)totalPopulation);
+      return new Pair<Integer, Float>(popOfRectangle, 100 * (float) popOfRectangle / (float) totalPopulation);
     }
 
   }
@@ -83,7 +85,7 @@ public class ParallelDumbCensusSolver implements CensusSolver {
     }
 
     protected Integer compute() {
-      if (maxIndex - minIndex <= calcPopCutoff) {
+      if (maxIndex - minIndex <= dataCUTOFF) {
         for (int i = minIndex; i < maxIndex; i++) {
           CensusGroup group = data.data[i];
           if (selection.contains(group.longitude, group.latitude)) {
