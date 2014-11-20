@@ -71,6 +71,14 @@ public class CensusSolverTests {
   }
 
   @Test
+  public void testSingleBucket() {
+    buildSolver(1, 1);
+    Pair<Integer, Float> p = solver.singleInteraction(1, 1, 1, 1);
+    assertEquals(312471327, (int) p.getElementA());
+    assertEquals(100.0, (float) p.getElementB(), 0.01);
+  }
+
+  @Test
   public void testHawaii() {
     Pair<Integer, Float> p = solver.singleInteraction(1, 1, 5, 4);
     assertEquals(1360301, (int) p.getElementA());
