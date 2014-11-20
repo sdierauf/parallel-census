@@ -109,11 +109,19 @@ public class ParallelSmartCensusSolver extends SmartCensusSolver implements Cens
 				int midwayY = (maxYIndex - minYIndex) / 2 + minYIndex;
 				ParallelAddMatrices fork = new ParallelAddMatrices(data1, data2, minXIndex,
 						midwayX, minYIndex, midwayY);
+        ParallelAddMatrices fork2 = new ParallelAddMatrices(data1, data2, minXIndex,
+            midwayX, midwayY, maxYIndex);
+        ParallelAddMatrices fork3 = new ParallelAddMatrices(data1, data2, midwayX,
+            maxXIndex, minYIndex, midwayY);
 				ParallelAddMatrices main = new ParallelAddMatrices(data1, data2, midwayX,
 						maxXIndex, midwayY, maxYIndex);
 				fork.fork();
+        fork2.fork();
+        fork3.fork();
 				main.compute();
 				fork.join();
+        fork2.join();
+        fork3.join();
 			}
 		}
 	}
