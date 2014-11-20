@@ -61,7 +61,7 @@ public class LinearDumbCensusSolver implements CensusSolver {
           popOfRectangle += group.population;
         }
       }
-      return new Pair<Integer, Float>(popOfRectangle, (float)(popOfRectangle * 100.0 / totalPopulation));
+      return new Pair<Integer, Float>(popOfRectangle, (float) (popOfRectangle * 100.0 / totalPopulation));
     }
   }
 

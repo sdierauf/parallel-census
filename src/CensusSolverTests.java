@@ -1,7 +1,9 @@
 
 
 import org.junit.*;
+
 import static org.junit.Assert.*;
+
 import org.junit.runner.*;
 import org.junit.runners.*;
 import org.junit.Test;
@@ -21,7 +23,7 @@ public class CensusSolverTests {
 
   @Parameterized.Parameters
   public static Collection<Object[]> data() {
-    return Arrays.asList(new Object[][] {
+    return Arrays.asList(new Object[][]{
         {LinearDumbCensusSolver.class},
         {LinearSmartCensusSolver.class},
         {ParallelDumbCensusSolver.class},
@@ -71,36 +73,36 @@ public class CensusSolverTests {
   @Test
   public void testHawaii() {
     Pair<Integer, Float> p = solver.singleInteraction(1, 1, 5, 4);
-    assertEquals(1360301, (int)p.getElementA());
-    assertEquals(0.44, (float)p.getElementB(), 0.01);
+    assertEquals(1360301, (int) p.getElementA());
+    assertEquals(0.44, (float) p.getElementB(), 0.01);
   }
 
   @Test
   public void testAlaska() {
     Pair<Integer, Float> p = solver.singleInteraction(1, 12, 9, 25);
-    assertEquals(710231, (int)p.getElementA());
-    assertEquals(0.23, (float)p.getElementB(), 0.01);
+    assertEquals(710231, (int) p.getElementA());
+    assertEquals(0.23, (float) p.getElementB(), 0.01);
   }
 
   @Test
   public void testMainUS() {
     Pair<Integer, Float> p = solver.singleInteraction(9, 1, 20, 13);
-    assertEquals(310400795, (int)p.getElementA());
-    assertEquals(99.34, (float)p.getElementB(), 0.01);
+    assertEquals(310400795, (int) p.getElementA());
+    assertEquals(99.34, (float) p.getElementB(), 0.01);
   }
 
   @Test
   public void bottom4() {
     Pair<Integer, Float> p = solver.singleInteraction(1, 1, 20, 4);
-    assertEquals(36493611, (int)p.getElementA());
-    assertEquals(11.68, (float)p.getElementB(), 0.01);
+    assertEquals(36493611, (int) p.getElementA());
+    assertEquals(11.68, (float) p.getElementB(), 0.01);
   }
 
   @Test
   public void middleish3() {
     Pair<Integer, Float> p = solver.singleInteraction(9, 1, 11, 25);
-    assertEquals(52392739, (int)p.getElementA());
-    assertEquals(16.77, (float)p.getElementB(), 0.01);
+    assertEquals(52392739, (int) p.getElementA());
+    assertEquals(16.77, (float) p.getElementB(), 0.01);
   }
 
 

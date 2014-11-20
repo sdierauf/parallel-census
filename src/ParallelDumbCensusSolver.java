@@ -55,7 +55,7 @@ public class ParallelDumbCensusSolver implements CensusSolver {
           minLatitude + south * latitudeUnit);
       ParallelCalculatePopulation calculatePopulation = new ParallelCalculatePopulation(0, this.data.data_size, selection);
       int popOfRectangle = pool.invoke(calculatePopulation);
-      return new Pair<Integer, Float>(popOfRectangle, 100 * (float) popOfRectangle / (float)totalPopulation);
+      return new Pair<Integer, Float>(popOfRectangle, 100 * (float) popOfRectangle / (float) totalPopulation);
     }
 
   }
