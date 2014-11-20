@@ -1,34 +1,19 @@
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.RecursiveTask;
 
 /**
  * Stefan Dierauf Nov 2014
- * Parallel Dumb CensusSolver
- * aka v2
  */
-
-
-public class ParallelDumbCensusSolver implements CensusSolver {
+public class ParallelSmartCensusSolver extends SmartCensusSolver implements CensusSolver {
   protected ForkJoinPool pool = new ForkJoinPool();
+  protected static int CUTOFF = 200;
+  public static int globalSum = 0;
 
   protected CensusData data;
 
-  private final int columns;
-  private final int rows;
-
-  private float minLongitude;
-  private float maxLongitude;
-  private float minLatitude;
-  private float maxLatitude;
-
-  protected float longitudeUnit;
-  protected float latitudeUnit;
-
-  private float totalPopulation;
-
-  public ParallelDumbCensusSolver(int columns, int rows, CensusData data) {
-    this.columns = columns;
-    this.rows = rows;
+  public ParallelSmartCensusSolver(int columns, int rows, CensusData data) {
+    super(columns, rows, data);
     this.data = data;
 
     ParallelFindCorners corners = new ParallelFindCorners(0, data.data_size, data);
@@ -40,66 +25,106 @@ public class ParallelDumbCensusSolver implements CensusSolver {
 
     longitudeUnit = (maxLongitude - minLongitude) / columns;
     latitudeUnit = (maxLatitude - minLatitude) / rows;
-  }
 
-  @Override
-  public Pair<Integer, Float> singleInteraction(int west, int south, int east, int north) {
-    if (!checkParams(west, south, east, north)) {
-      return null;
-    } else {
-      south = south - 1;
-      west = west - 1;
-      Rectangle selection = new Rectangle(minLongitude + west * longitudeUnit,
-          minLongitude + east * longitudeUnit,
-          minLatitude + north * latitudeUnit,
-          minLatitude + south * latitudeUnit);
-      ParallelCalculatePopulation calculatePopulation = new ParallelCalculatePopulation(0, this.data.data_size, selection);
-      int popOfRectangle = pool.invoke(calculatePopulation);
-      return new Pair<Integer, Float>(popOfRectangle, 100 * (float) popOfRectangle / (float) totalPopulation);
-    }
-
-  }
-
-  private boolean checkParams(int west, int south, int east, int north) {
-    return west > 0 && south > 0
-        && east <= this.columns && north <= this.rows
-        && east >= west && north >= south;
+    ParallelBuildPopulationArray buildPopulationArray = new ParallelBuildPopulationArray(0, data.data_size);
+    theUSA = pool.invoke(buildPopulationArray);
+    makePopSumArray(theUSA);
   }
 
   @SuppressWarnings("serial")
-  private class ParallelCalculatePopulation extends RecursiveTask<Integer> {
-    private int minIndex;
-    private int maxIndex;
-    private final Rectangle selection;
-    private final int calcPopCutoff = 400;
-    private int partialPopulation;
+  private class ParallelBuildPopulationArray extends RecursiveTask<int[][]> {
+    public int minIndex;
+    public int maxIndex;
+    public int[][] grid;
+    public float partialPop;
 
-
-    ParallelCalculatePopulation(int minIndex, int maxIndex, Rectangle selection) {
+    ParallelBuildPopulationArray(int minIndex, int maxIndex) {
       this.minIndex = minIndex;
       this.maxIndex = maxIndex;
-      this.selection = selection;
-      this.partialPopulation = 0;
+      grid = new int[rows][columns];
+      partialPop = 0;
     }
 
-    protected Integer compute() {
-      if (maxIndex - minIndex <= calcPopCutoff) {
+    protected int[][] compute() {
+      if (maxIndex - minIndex <= CUTOFF * 10) {
+        partialPop = 0;
         for (int i = minIndex; i < maxIndex; i++) {
           CensusGroup group = data.data[i];
-          if (selection.contains(group.longitude, group.latitude)) {
-            this.partialPopulation += group.population;
+          int row = (int) ((group.latitude - minLatitude) / latitudeUnit);
+          if (row == rows) {
+            row--;
           }
+          int col = (int) ((group.longitude - minLongitude) / longitudeUnit);
+          if (col == columns) {
+            col--;
+          }
+          partialPop += group.population;
+          grid[row][col] += group.population;
         }
-        return this.partialPopulation;
+        return grid;
       } else {
         int midway = (maxIndex - minIndex) / 2 + minIndex;
-        ParallelCalculatePopulation main = new ParallelCalculatePopulation(minIndex, midway, selection);
-        ParallelCalculatePopulation fork = new ParallelCalculatePopulation(midway, maxIndex, selection);
+        ParallelBuildPopulationArray fork = new ParallelBuildPopulationArray(minIndex, midway);
+        ParallelBuildPopulationArray main = new ParallelBuildPopulationArray(midway, maxIndex);
         fork.fork();
-        int result1 = main.compute();
-        int result2 = fork.join();
-        this.partialPopulation = result1 + result2;
-        return this.partialPopulation;
+        main.compute();
+        fork.join();
+        this.partialPop = fork.partialPop + main.partialPop;
+
+        ParallelAddMatrices adder = new ParallelAddMatrices(fork.grid, main.grid, 0,
+            fork.grid.length, 0, fork.grid[0].length, this.grid);
+        adder.compute();
+        return this.grid;
+      }
+    }
+  }
+
+  @SuppressWarnings("serial")
+  private class ParallelAddMatrices extends RecursiveAction {
+    public int[][] data1;
+    public int[][] data2;
+    public int[][] finalGrid;
+    public int minXIndex;
+    public int maxXIndex;
+    public int maxYIndex;
+    public int minYIndex;
+
+    public ParallelAddMatrices(int[][] data1, int[][] data2, int minXIndex, int maxXIndex,
+                               int minYIndex, int maxYIndex, int[][] finalGrid) {
+      this.data1 = data1;
+      this.data2 = data2;
+      this.minXIndex = minXIndex;
+      this.maxXIndex = maxXIndex;
+      this.minYIndex = minYIndex;
+      this.maxYIndex = maxYIndex;
+      this.finalGrid = finalGrid;
+    }
+
+    protected void compute() {
+      if (Math.max(maxXIndex - minXIndex, maxYIndex - minYIndex) <= CUTOFF) {
+        for (int i = minXIndex; i < maxXIndex; i++) {
+          for (int j = minYIndex; j < maxYIndex; j++) {
+            finalGrid[i][j] = data1[i][j] + data2[i][j];
+          }
+        }
+      } else {
+        int midwayX = (maxXIndex - minXIndex) / 2 + minXIndex;
+        int midwayY = (maxYIndex - minYIndex) / 2 + minYIndex;
+        ParallelAddMatrices fork = new ParallelAddMatrices(data1, data2, minXIndex,
+            midwayX, minYIndex, midwayY, finalGrid);
+        ParallelAddMatrices fork2 = new ParallelAddMatrices(data1, data2, minXIndex,
+            midwayX, midwayY, maxYIndex, finalGrid);
+        ParallelAddMatrices fork3 = new ParallelAddMatrices(data1, data2, midwayX,
+            maxXIndex, minYIndex, midwayY, finalGrid);
+        ParallelAddMatrices main = new ParallelAddMatrices(data1, data2, midwayX,
+            maxXIndex, midwayY, maxYIndex, finalGrid);
+        fork.fork();
+        fork2.fork();
+        fork3.fork();
+        main.compute();
+        fork.join();
+        fork2.join();
+        fork3.join();
       }
     }
   }
