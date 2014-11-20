@@ -1,6 +1,4 @@
-
 public abstract class SmartCensusSolver implements CensusSolver {
-
   protected int[][] theUSA;
   protected int totalPopulation;
   protected int columns;

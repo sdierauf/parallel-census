@@ -21,6 +21,7 @@ public class LinearDumbCensusSolver implements CensusSolver {
     this.columns = columns;
     this.rows = rows;
     //find four corners of the US
+    Timer algTimer = new Timer("lindumb").start();
     for (int i = 0; i < data.data_size; i++) {
       CensusGroup group = data.data[i];
       if (group.longitude > maxLon) {
@@ -41,6 +42,7 @@ public class LinearDumbCensusSolver implements CensusSolver {
     //longitude varies from west to east, with western longitudes being less than eastern longitudes
     latUnit = (maxLat - minLat) / rows;
     lonUnit = (maxLon - minLon) / columns;
+    algTimer.end();
   }
 
   @Override
