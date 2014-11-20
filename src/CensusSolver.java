@@ -7,7 +7,8 @@
  * v2 = Parallel, dumb
  * v3 = linear, clever
  * v4 = Parallel, clever
- * v5 = ?? da fuck
+ * v5 = Quantum, ridiculous
+ * v6 = Relativistic, interstellar
  */
 
 public interface CensusSolver {

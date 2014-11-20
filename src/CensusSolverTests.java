@@ -14,8 +14,6 @@ import java.util.Collection;
 /**
  * Stefan Dierauf Nov 2014
  * Fuckit going to write spec tests because he gave us more sample output
- *
- *
  */
 
 @RunWith(Parameterized.class)
@@ -47,7 +45,7 @@ public class CensusSolverTests {
 
   public void buildSolver(int rows, int cols) {
     try {
-//      System.out.println(Arrays.toString(testingClass.getConstructors()[0].getGenericParameterTypes()));
+//    System.out.println(Arrays.toString(testingClass.getConstructors()[0].getGenericParameterTypes()));
       Class[] cArg = new Class[]{Integer.TYPE, Integer.TYPE, CensusData.class};
       this.solver = (CensusSolver) testingClass.getDeclaredConstructor(cArg)
           .newInstance(rows, cols, data);

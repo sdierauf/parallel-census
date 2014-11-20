@@ -1,5 +1,4 @@
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.RecursiveTask;
 
 /**
@@ -11,7 +10,6 @@ import java.util.concurrent.RecursiveTask;
 
 public class ParallelDumbCensusSolver implements CensusSolver {
   protected ForkJoinPool pool = new ForkJoinPool();
-  protected static int CUTOFF = 200;
 
   protected CensusData data;
 
@@ -28,19 +26,18 @@ public class ParallelDumbCensusSolver implements CensusSolver {
 
   private float totalPopulation;
 
-
-
-
   public ParallelDumbCensusSolver(int columns, int rows, CensusData data) {
     this.columns = columns;
     this.rows = rows;
     this.data = data;
-    ParallelFindCorners corners = new ParallelFindCorners(0, data.data_size);
+
+    ParallelFindCorners corners = new ParallelFindCorners(0, data.data_size, data);
     totalPopulation = pool.invoke(corners);
     minLongitude = corners.minLongitude;
     minLatitude = corners.minLatitude;
     maxLongitude = corners.maxLongitude;
     maxLatitude = corners.maxLatitude;
+
     longitudeUnit = (maxLongitude - minLongitude) / columns;
     latitudeUnit = (maxLatitude - minLatitude) / rows;
   }
@@ -69,56 +66,7 @@ public class ParallelDumbCensusSolver implements CensusSolver {
         && east >= west && north >= south;
   }
 
-
-  private class ParallelFindCorners extends RecursiveTask<Float> {
-    public float minLongitude;
-    public float maxLongitude;
-    public float minLatitude;
-    public float maxLatitude;
-
-    private int minIndex;
-    private int maxIndex;
-    public float population;
-
-    ParallelFindCorners(int minIndex, int maxIndex) {
-      this.minIndex = minIndex;
-      this.maxIndex = maxIndex;
-      this.population = 0;
-    }
-
-    protected Float compute() {
-      if (maxIndex - minIndex <= CUTOFF) {
-        minLongitude = Float.POSITIVE_INFINITY;
-        maxLongitude = Float.NEGATIVE_INFINITY;
-        minLatitude = Float.POSITIVE_INFINITY;
-        maxLatitude = Float.NEGATIVE_INFINITY;
-
-        for (int i = minIndex; i < maxIndex; i++) {
-          CensusGroup group = data.data[i];
-          this.population += group.population;
-          minLongitude = Math.min(minLongitude, group.longitude);
-          minLatitude = Math.min(minLatitude, group.latitude);
-          maxLongitude = Math.max(maxLongitude, group.longitude);
-          maxLatitude = Math.max(maxLatitude, group.latitude);
-        }
-        return this.population;
-      } else {
-        int midway = (maxIndex - minIndex) / 2 + minIndex;
-        ParallelFindCorners fork = new ParallelFindCorners(minIndex, midway);
-        ParallelFindCorners main = new ParallelFindCorners(midway, maxIndex);
-        fork.fork();
-        main.compute();
-        fork.join();
-        minLongitude = Math.min(fork.minLongitude, main.minLongitude);
-        minLatitude = Math.min(fork.minLatitude, main.minLatitude);
-        maxLongitude = Math.max(fork.maxLongitude, main.maxLongitude);
-        maxLatitude = Math.max(fork.maxLatitude, main.maxLatitude);
-        this.population = fork.population + main.population;
-        return this.population;
-      }
-    }
-  }
-
+  @SuppressWarnings("serial")
   private class ParallelCalculatePopulation extends RecursiveTask<Integer> {
     private int minIndex;
     private int maxIndex;
@@ -155,5 +103,4 @@ public class ParallelDumbCensusSolver implements CensusSolver {
       }
     }
   }
-  
 }
