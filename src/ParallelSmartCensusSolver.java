@@ -4,6 +4,8 @@ import java.util.concurrent.RecursiveTask;
 
 /**
  * Stefan Dierauf Nov 2014
+ * Parallel smart solver
+ * aka v4
  */
 public class ParallelSmartCensusSolver extends SmartCensusSolver implements CensusSolver {
   protected ForkJoinPool pool = new ForkJoinPool();

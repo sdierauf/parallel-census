@@ -80,13 +80,13 @@ public class PopulationQuery {
         solver = new LinearDumbCensusSolver(columns, rows, data);
         break;
       case 2:
-        //do parallel dumb
+        solver = new ParallelDumbCensusSolver(columns, rows, data);
         break;
       case 3:
         solver = new LinearSmartCensusSolver(columns, rows, data);
         break;
       case 4:
-        //do parallel smart
+        solver = new ParallelSmartCensusSolver(columns, rows, data);
         break;
       default:
         throw new IllegalArgumentException(); //yolo
