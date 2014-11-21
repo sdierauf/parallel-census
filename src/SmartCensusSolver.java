@@ -52,7 +52,6 @@ public abstract class SmartCensusSolver implements CensusSolver {
       leftAndAboveOfUpperLeft = theUSA[south - 1][west - 1];
     }
     int population = bottomRight - aboveTopRight - leftOfBottomLeft + leftAndAboveOfUpperLeft;
-    t.end();
     return new Pair<Integer, Float>(population, population / (float) totalPopulation * 100);
   }
 
@@ -72,6 +71,7 @@ public abstract class SmartCensusSolver implements CensusSolver {
         }
       }
     }
+    t.end();
     // return popSumArray;
   }
 

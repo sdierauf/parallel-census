@@ -27,10 +27,8 @@ public class ParallelDumbCensusSolver implements CensusSolver {
   protected float latitudeUnit;
 
   private float totalPopulation;
-  public static Timer t = new Timer();
 
   public ParallelDumbCensusSolver(int columns, int rows, CensusData data) {
-    t.start();
     this.columns = columns;
     this.rows = rows;
     this.data = data;
@@ -59,7 +57,6 @@ public class ParallelDumbCensusSolver implements CensusSolver {
           minLatitude + south * latitudeUnit);
       ParallelCalculatePopulation calculatePopulation = new ParallelCalculatePopulation(0, this.data.data_size, selection);
       int popOfRectangle = pool.invoke(calculatePopulation);
-      t.end();
       return new Pair<Integer, Float>(popOfRectangle, 100 * (float) popOfRectangle / (float) totalPopulation);
     }
 

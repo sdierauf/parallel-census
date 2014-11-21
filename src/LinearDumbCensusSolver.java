@@ -15,14 +15,12 @@ public class LinearDumbCensusSolver implements CensusSolver {
   private float minLon = Integer.MAX_VALUE;
   private float maxLat = Integer.MIN_VALUE;
   private float minLat = Integer.MAX_VALUE;
-  public static Timer t = new Timer();
 
   public LinearDumbCensusSolver(int columns, int rows, CensusData data) {
     this.data = data;
     this.columns = columns;
     this.rows = rows;
     //find four corners of the US
-    t.start();
     for (int i = 0; i < data.data_size; i++) {
       CensusGroup group = data.data[i];
       if (group.longitude > maxLon) {
@@ -64,7 +62,6 @@ public class LinearDumbCensusSolver implements CensusSolver {
           popOfRectangle += group.population;
         }
       }
-      t.end();
       return new Pair<Integer, Float>(popOfRectangle, (float) (popOfRectangle * 100.0 / totalPopulation));
     }
   }

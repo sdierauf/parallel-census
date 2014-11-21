@@ -6,7 +6,7 @@ public class ParallelFindCorners extends RecursiveTask<Integer> {
   public float maxLongitude;
   public float minLatitude;
   public float maxLatitude;
-  protected static int CUTOFF;
+  public static int CUTOFF;
 
   private int minIndex;
   private int maxIndex;
