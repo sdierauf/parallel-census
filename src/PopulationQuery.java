@@ -136,21 +136,22 @@ public class PopulationQuery {
     do {
       System.out.print("Please give west, south, east, north coordinates of your query rectangle: ");
       input = in.nextLine();
-      String[] nums = input.split(" ");
-      int[] parsedNums = new int[4];
-      for (int i = 0; i < nums.length; i++) {
-        parsedNums[i] = Integer.parseInt(nums[i]);
-      }
+      if (!input.trim().equals("exit")) {
+        String[] nums = input.split(" ");
+        int[] parsedNums = new int[4];
+        for (int i = 0; i < nums.length; i++) {
+          parsedNums[i] = Integer.parseInt(nums[i]);
+        }
 
-      Pair<Integer, Float> result = singleInteraction(parsedNums);
-      if (result != null) {
-        System.out.println("population of rectangle: " + result.getElementA());
-        System.out.println("percent of total population: " + result.getElementB());
-      } else {
-        printError("OOPS YOU MESSED UP");
+        Pair<Integer, Float> result = singleInteraction(parsedNums);
+        if (result != null) {
+          System.out.println("population of rectangle: " + result.getElementA());
+          System.out.println("percent of total population: " + result.getElementB());
+        } else {
+          printError("OOPS YOU MESSED UP");
+        }
       }
-
-    } while (!input.equals("exit"));
+    } while (!input.trim().equals("exit"));
 
   }
 
